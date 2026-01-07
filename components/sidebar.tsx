@@ -35,7 +35,7 @@ export function Sidebar() {
 
   return (
     <aside className="w-64 min-h-screen bg-background border-r flex flex-col justify-between">
-      
+
       {/* TOPO */}
       <div>
         {/* Logo */}
@@ -66,12 +66,20 @@ export function Sidebar() {
           >
             👤 Membros
           </Link>
+
+          <Link
+            href="/configuracoes"
+            className="block rounded-md px-4 py-2 text-sm hover:bg-muted transition"
+          >
+            🎨 Configurações
+          </Link>
+
         </nav>
       </div>
 
       {/* RODAPÉ */}
       <div className="p-4 border-t space-y-2">
-        
+
         {/* Botão de Tema */}
         <Button
           variant="outline"

@@ -18,7 +18,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/20 via-background to-secondary/20">
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="text-center space-y-2">
-          <CardTitle className="text-2xl">Assembleia de Deus Missão Jd. Pôr do Sol
+          <CardTitle className="text-2xl">Portal Ekklesia
           </CardTitle>
           <p className="text-sm text-muted-foreground">
             Acesse sua conta
