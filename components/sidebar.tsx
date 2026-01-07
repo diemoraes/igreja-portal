@@ -9,17 +9,62 @@ import { useTheme } from "next-themes";
 export function Sidebar() {
   const router = useRouter();
   const { theme, setTheme } = useTheme();
+
   const [userName, setUserName] = useState("Usuário");
+  const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
 
-    const match = document.cookie.match(/userName=([^;]+)/);
-    if (match) {
-      setUserName(decodeURIComponent(match[1]));
+    const nameMatch = document.cookie.match(/userName=([^;]+)/);
+    if (nameMatch) setUserName(decodeURIComponent(nameMatch[1]));
+
+    const saved = localStorage.getItem("sidebarCollapsed");
+    if (saved) setCollapsed(saved === "true");
+
+    function handleResize() {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+
+      if (mobile) {
+        setCollapsed(true);
+        setMobileOpen(false);
+      }
     }
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  function expandSidebar() {
+    if (collapsed) {
+      setCollapsed(false);
+      localStorage.setItem("sidebarCollapsed", "false");
+    }
+  }
+
+  function toggleSidebar() {
+    if (isMobile) {
+      setMobileOpen(!mobileOpen);
+    } else {
+      const value = !collapsed;
+      setCollapsed(value);
+      localStorage.setItem("sidebarCollapsed", String(value));
+    }
+  }
+
+  function handleMenuClick() {
+    if (isMobile) setMobileOpen(false);
+    expandSidebar();
+  }
+
+  function toggleTheme() {
+    setTheme(theme === "dark" ? "light" : "dark");
+  }
 
   function logout() {
     document.cookie = "auth=; Max-Age=0; path=/";
@@ -27,77 +72,111 @@ export function Sidebar() {
     router.push("/login");
   }
 
-  function toggleTheme() {
-    setTheme(theme === "dark" ? "light" : "dark");
-  }
-
   if (!mounted) return null;
 
   return (
-    <aside className="w-64 min-h-screen bg-background border-r flex flex-col justify-between">
+    <>
+      {/* BOTÃO MOBILE */}
+      {isMobile && (
+        <button
+          onClick={toggleSidebar}
+          className="fixed top-4 left-4 z-50 p-2 rounded-md bg-background border shadow"
+        >
+          ☰
+        </button>
+      )}
 
-      {/* TOPO */}
-      <div>
-        {/* Logo */}
-        <div className="h-16 flex items-center px-6 border-b">
-          <span className="text-xl font-bold text-primary">
-            ⛪ Portal Igreja
-          </span>
+      {/* OVERLAY MOBILE */}
+      {isMobile && mobileOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
+
+      {/* SIDEBAR */}
+      <aside
+        className={`
+          fixed md:static z-50
+          ${collapsed ? "w-16" : "w-64"}
+          ${isMobile && !mobileOpen ? "-translate-x-full" : "translate-x-0"}
+          transition-all duration-300
+          min-h-screen bg-background border-r
+          flex flex-col justify-between
+        `}
+      >
+        {/* TOPO */}
+        <div>
+          <div className="h-16 flex items-center justify-between px-4 border-b">
+            {!collapsed && <span className="font-bold text-primary">⛪ Portal</span>}
+            <button onClick={toggleSidebar} className="text-sm">
+              {isMobile ? "✖" : collapsed ? "➡️" : "⬅️"}
+            </button>
+          </div>
+
+          {!collapsed && (
+            <div className="px-4 py-4">
+              <p className="text-xs text-muted-foreground">Bem-vindo,</p>
+              <p className="font-semibold">{userName}</p>
+            </div>
+          )}
+
+          <nav className="px-2 space-y-1">
+            <MenuItem href="/dashboard" icon="📊" label="Dashboard" collapsed={collapsed} onClick={handleMenuClick} />
+            <MenuItem href="/membros" icon="👤" label="Membros" collapsed={collapsed} onClick={handleMenuClick} />
+            <MenuItem href="/configuracoes" icon="🎨" label="Configurações" collapsed={collapsed} onClick={handleMenuClick} />
+          </nav>
         </div>
 
-        {/* Bem-vindo */}
-        <div className="px-6 py-4">
-          <p className="text-sm text-muted-foreground">Bem-vindo,</p>
-          <p className="font-semibold">{userName}</p>
+        {/* RODAPÉ */}
+        <div className="p-2 border-t space-y-2">
+          <Button
+            variant="outline"
+            className={`w-full ${collapsed ? "justify-center" : "justify-start"}`}
+            onClick={toggleTheme}
+          >
+            {collapsed ? "🌗" : theme === "dark" ? "🌙 Escuro" : "☀️ Claro"}
+          </Button>
+
+          <Button
+            variant="destructive"
+            className={`w-full ${collapsed ? "justify-center" : "justify-start"}`}
+            onClick={logout}
+          >
+            {collapsed ? "🚪" : "Sair"}
+          </Button>
         </div>
+      </aside>
+    </>
+  );
+}
 
-        {/* Menu */}
-        <nav className="px-4 space-y-1">
-          <Link
-            href="/dashboard"
-            className="block rounded-md px-4 py-2 text-sm hover:bg-muted transition"
-          >
-            📊 Dashboard
-          </Link>
-
-          <Link
-            href="/membros"
-            className="block rounded-md px-4 py-2 text-sm hover:bg-muted transition"
-          >
-            👤 Membros
-          </Link>
-
-          <Link
-            href="/configuracoes"
-            className="block rounded-md px-4 py-2 text-sm hover:bg-muted transition"
-          >
-            🎨 Configurações
-          </Link>
-
-        </nav>
-      </div>
-
-      {/* RODAPÉ */}
-      <div className="p-4 border-t space-y-2">
-
-        {/* Botão de Tema */}
-        <Button
-          variant="outline"
-          className="w-full justify-start"
-          onClick={toggleTheme}
-        >
-          {theme === "dark" ? "🌙 Modo escuro" : "☀️ Modo claro"}
-        </Button>
-
-        {/* Logout */}
-        <Button
-          variant="destructive"
-          className="w-full"
-          onClick={logout}
-        >
-          Sair
-        </Button>
-      </div>
-    </aside>
+function MenuItem({
+  href,
+  icon,
+  label,
+  collapsed,
+  onClick,
+}: {
+  href: string;
+  icon: string;
+  label: string;
+  collapsed: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <Link
+      href={href}
+      onClick={onClick}
+      className={`
+        flex items-center gap-3 rounded-md px-3 py-2 text-sm
+        hover:bg-muted transition
+        ${collapsed ? "justify-center" : ""}
+      `}
+      title={collapsed ? label : undefined}
+    >
+      <span className="text-lg">{icon}</span>
+      {!collapsed && <span>{label}</span>}
+    </Link>
   );
 }

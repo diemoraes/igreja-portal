@@ -8,11 +8,16 @@ import { Input } from "@/components/ui/input";
 export default function LoginPage() {
   const router = useRouter();
 
-  function handleLogin() {
-    document.cookie = "auth=true; path=/; SameSite=Lax";
-    document.cookie = "userName=Diego; path=/; SameSite=Lax";
-    router.push("/dashboard");
-  }
+function handleLogin() {
+  const churchId = "igreja-central"; // depois vira select
+
+  document.cookie = "auth=true; path=/; SameSite=Lax";
+  document.cookie = "userName=Diego; path=/; SameSite=Lax";
+  document.cookie = `churchId=${churchId}; path=/; SameSite=Lax`;
+
+  router.push("/dashboard");
+}
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/20 via-background to-secondary/20">

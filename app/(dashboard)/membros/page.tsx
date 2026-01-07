@@ -19,7 +19,13 @@ export default function MembrosPage() {
     const dados = JSON.parse(
       localStorage.getItem("membros") || "[]"
     );
-    setMembros(dados);
+    const churchId = document.cookie.match(/churchId=([^;]+)/)?.[1];
+
+    const filtrados = dados.filter(
+      (m: any) => m.churchId === churchId
+    );
+
+    setMembros(filtrados);
   }, []);
 
   return (

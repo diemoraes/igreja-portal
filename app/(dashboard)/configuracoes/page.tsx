@@ -5,6 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
+function getChurchId() {
+  const match = document.cookie.match(/churchId=([^;]+)/);
+  return match ? match[1] : "default";
+}
+
+
 export default function ConfiguracoesPage() {
   const [nome, setNome] = useState("Igreja");
   const [logo, setLogo] = useState<string | null>(null);
@@ -13,7 +19,7 @@ export default function ConfiguracoesPage() {
 
   useEffect(() => {
     const data = JSON.parse(
-      localStorage.getItem("igreja") || "{}"
+      localStorage.getItem(`igreja_${getChurchId()}`) || "{}"
     );
 
     if (data.nome) setNome(data.nome);
@@ -31,7 +37,10 @@ export default function ConfiguracoesPage() {
 
   function handleSave() {
     const data = { nome, logo, primary, secondary };
-    localStorage.setItem("igreja", JSON.stringify(data));
+    localStorage.setItem(
+      `igreja_${getChurchId()}`,
+      JSON.stringify(data)
+    );
     applyColors(primary, secondary);
     alert("Configurações salvas!");
   }

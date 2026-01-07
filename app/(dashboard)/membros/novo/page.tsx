@@ -36,8 +36,11 @@ export default function NovoMembroPage() {
       localStorage.getItem("membros") || "[]"
     );
 
+    const churchId = document.cookie.match(/churchId=([^;]+)/)?.[1];
+
     membros.push({
       id: crypto.randomUUID(),
+      churchId,
       ...form,
     });
 
