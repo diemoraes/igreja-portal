@@ -149,12 +149,29 @@ export function Sidebar() {
             />
 
             <MenuItem
-              href="/membros"
-              icon="👤"
+              href="/members"
               label="Membros"
               collapsed={collapsed}
               onClick={handleMenuClick}
+              icon={
+                <>
+                  {/* modo claro */}
+                  <img
+                    src="/icons/members-24-light.png"
+                    alt="Dashboard"
+                    className="block dark:hidden w-5 h-5"
+                  />
+
+                  {/* modo escuro */}
+                  <img
+                    src="/icons/members-24-dark.png"
+                    alt="Dashboard"
+                    className="hidden dark:block w-5 h-5"
+                  />
+                </>
+              }
             />
+
             <MenuItem
               href="/configuracoes"
               icon="🎨"
@@ -174,7 +191,7 @@ export function Sidebar() {
             }`}
             onClick={toggleTheme}
           >
-            {collapsed ? "🌗" : theme === "dark" ? "🌙 Escuro" : "☀️ Claro"}
+            {collapsed ? "🌗" : theme === "dark" ?   "☀️ Claro" : "🌙 Escuro"}
           </Button>
 
           <Button
