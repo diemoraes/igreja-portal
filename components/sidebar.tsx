@@ -108,7 +108,9 @@ export function Sidebar() {
         {/* TOPO */}
         <div>
           <div className="h-16 flex items-center justify-between px-4 border-b">
-            {!collapsed && <span className="font-bold text-primary">⛪ Portal</span>}
+            {!collapsed && (
+              <span className="font-bold text-primary">⛪ Portal</span>
+            )}
             <button onClick={toggleSidebar} className="text-sm">
               {isMobile ? "✖" : collapsed ? "➡️" : "⬅️"}
             </button>
@@ -122,9 +124,44 @@ export function Sidebar() {
           )}
 
           <nav className="px-2 space-y-1">
-            <MenuItem href="/dashboard" icon="📊" label="Dashboard" collapsed={collapsed} onClick={handleMenuClick} />
-            <MenuItem href="/membros" icon="👤" label="Membros" collapsed={collapsed} onClick={handleMenuClick} />
-            <MenuItem href="/configuracoes" icon="🎨" label="Configurações" collapsed={collapsed} onClick={handleMenuClick} />
+            <MenuItem
+              href="/dashboard"
+              label="Dashboard"
+              collapsed={collapsed}
+              onClick={handleMenuClick}
+              icon={
+                <>
+                  {/* modo claro */}
+                  <img
+                    src="/icons/Dash-24-light.png"
+                    alt="Dashboard"
+                    className="block dark:hidden w-5 h-5"
+                  />
+
+                  {/* modo escuro */}
+                  <img
+                    src="/icons/Dash-24-dark.png"
+                    alt="Dashboard"
+                    className="hidden dark:block w-5 h-5"
+                  />
+                </>
+              }
+            />
+
+            <MenuItem
+              href="/membros"
+              icon="👤"
+              label="Membros"
+              collapsed={collapsed}
+              onClick={handleMenuClick}
+            />
+            <MenuItem
+              href="/configuracoes"
+              icon="🎨"
+              label="Configurações"
+              collapsed={collapsed}
+              onClick={handleMenuClick}
+            />
           </nav>
         </div>
 
@@ -132,7 +169,9 @@ export function Sidebar() {
         <div className="p-2 border-t space-y-2">
           <Button
             variant="outline"
-            className={`w-full ${collapsed ? "justify-center" : "justify-start"}`}
+            className={`w-full ${
+              collapsed ? "justify-center" : "justify-start"
+            }`}
             onClick={toggleTheme}
           >
             {collapsed ? "🌗" : theme === "dark" ? "🌙 Escuro" : "☀️ Claro"}
@@ -140,7 +179,9 @@ export function Sidebar() {
 
           <Button
             variant="destructive"
-            className={`w-full ${collapsed ? "justify-center" : "justify-start"}`}
+            className={`w-full ${
+              collapsed ? "justify-center" : "justify-start"
+            }`}
             onClick={logout}
           >
             {collapsed ? "🚪" : "Sair"}
@@ -159,7 +200,7 @@ function MenuItem({
   onClick,
 }: {
   href: string;
-  icon: string;
+  icon: React.ReactNode;
   label: string;
   collapsed: boolean;
   onClick: () => void;
@@ -175,7 +216,7 @@ function MenuItem({
       `}
       title={collapsed ? label : undefined}
     >
-      <span className="text-lg">{icon}</span>
+      <span className="w-6 h-6 flex items-center justify-center">{icon}</span>
       {!collapsed && <span>{label}</span>}
     </Link>
   );
