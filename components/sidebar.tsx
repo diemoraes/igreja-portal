@@ -22,7 +22,7 @@ export function Sidebar() {
   const menuItems = [
     {
       label: "Dashboard",
-      href: "/dashboard",
+      href: "dashboard",
       order: 1,
       icon: (
         <>
@@ -41,7 +41,7 @@ export function Sidebar() {
     },
     {
       label: "Membros",
-      href: "/membros",
+      href: "membros",
       order: 2,
       icon: (
         <>
@@ -60,7 +60,7 @@ export function Sidebar() {
     },
     {
       label: "Eventos",
-      href: "/eventos",
+      href: "/em-breve",
       order: 3,
       icon: (
         <>
