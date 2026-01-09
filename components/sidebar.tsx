@@ -16,6 +16,90 @@ export function Sidebar() {
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
 
+  /* =========================
+     MENU CONFIGURÁVEL (ORDEM)
+     ========================= */
+  const menuItems = [
+    {
+      label: "Dashboard",
+      href: "/dashboard",
+      order: 1,
+      icon: (
+        <>
+          <img
+            src="/icons/Dash-24-light.png"
+            alt="Dashboard"
+            className="block dark:hidden w-5 h-5"
+          />
+          <img
+            src="/icons/Dash-24-dark.png"
+            alt="Dashboard"
+            className="hidden dark:block w-5 h-5"
+          />
+        </>
+      ),
+    },
+    {
+      label: "Membros",
+      href: "/membros",
+      order: 2,
+      icon: (
+        <>
+          <img
+            src="/icons/members-24-light.png"
+            alt="Membros"
+            className="block dark:hidden w-5 h-5"
+          />
+          <img
+            src="/icons/members-24-dark.png"
+            alt="Membros"
+            className="hidden dark:block w-5 h-5"
+          />
+        </>
+      ),
+    },
+    {
+      label: "Eventos",
+      href: "/eventos",
+      order: 3,
+      icon: (
+        <>
+          <img
+            src="/icons/evento-24-light.png"
+            alt="Eventos"
+            className="block dark:hidden w-5 h-5"
+          />
+          <img
+            src="/icons/evento-24-dark.png"
+            alt="Eventos"
+            className="hidden dark:block w-5 h-5"
+          />
+        </>
+      ),
+    },
+    {
+      label: "Configurações",
+      href: "/configuracoes",
+      order: 0,
+      icon: (
+        <>
+          <img
+            src="/icons/config-24-light.png"
+            alt="Configurações"
+            className="block dark:hidden w-5 h-5"
+          />
+          <img
+            src="/icons/config-24-dark.png"
+            alt="Configurações"
+            className="hidden dark:block w-5 h-5"
+          />
+        </>
+      ),
+    },
+  ];
+
+  /* ========================= */
+
   useEffect(() => {
     setMounted(true);
 
@@ -115,50 +199,39 @@ export function Sidebar() {
                   alt="Portal Ekklesia"
                   className="h-7 w-7"
                 />
-                <span className="font-bold text-primary">Portal Ekklesia</span>
+                <span className="font-bold text-primary">
+                  Portal Ekklesia
+                </span>
               </div>
             )}
+
             <button
               onClick={toggleSidebar}
               className="w-8 h-8 flex items-center justify-center rounded hover:bg-muted transition"
             >
-              {/* MOBILE */}
-              {isMobile && <span className="text-lg">✖</span>}
-
-              {/* DESKTOP */}
-              {!isMobile && (
+              {isMobile ? (
+                <span className="text-lg">✖</span>
+              ) : !collapsed ? (
                 <>
-                  {/* recolher (←) */}
-                  {!collapsed && (
-                    <>
-                      <img
-                        src="/icons/Back-24-light.png"
-                        alt="Recolher menu"
-                        className="block dark:hidden w-4 h-4"
-                      />
-                      <img
-                        src="/icons/Back-24-dark.png"
-                        alt="Recolher menu"
-                        className="hidden dark:block w-4 h-4"
-                      />
-                    </>
-                  )}
-
-                  {/* expandir (→) */}
-                  {collapsed && (
-                    <>
-                      <img
-                        src="/icons/forward-24-light.png"
-                        alt="Expandir menu"
-                        className="block dark:hidden w-4 h-4"
-                      />
-                      <img
-                        src="/icons/forward-24-dark.png"
-                        alt="Expandir menu"
-                        className="hidden dark:block w-4 h-4"
-                      />
-                    </>
-                  )}
+                  <img
+                    src="/icons/Back-24-light.png"
+                    className="block dark:hidden w-4 h-4"
+                  />
+                  <img
+                    src="/icons/Back-24-dark.png"
+                    className="hidden dark:block w-4 h-4"
+                  />
+                </>
+              ) : (
+                <>
+                  <img
+                    src="/icons/forward-24-light.png"
+                    className="block dark:hidden w-4 h-4"
+                  />
+                  <img
+                    src="/icons/forward-24-dark.png"
+                    className="hidden dark:block w-4 h-4"
+                  />
                 </>
               )}
             </button>
@@ -171,78 +244,20 @@ export function Sidebar() {
             </div>
           )}
 
+          {/* MENU */}
           <nav className="px-2 space-y-1">
-            <MenuItem
-              href="dashboard"
-              label="Dashboard"
-              collapsed={collapsed}
-              onClick={handleMenuClick}
-              icon={
-                <>
-                  {/* modo claro */}
-                  <img
-                    src="/icons/Dash-24-light.png"
-                    alt="Dashboard"
-                    className="block dark:hidden w-5 h-5"
-                  />
-
-                  {/* modo escuro */}
-                  <img
-                    src="/icons/Dash-24-dark.png"
-                    alt="Dashboard"
-                    className="hidden dark:block w-5 h-5"
-                  />
-                </>
-              }
-            />
-
-            <MenuItem
-              href="membros"
-              label="Membros"
-              collapsed={collapsed}
-              onClick={handleMenuClick}
-              icon={
-                <>
-                  {/* modo claro */}
-                  <img
-                    src="/icons/members-24-light.png"
-                    alt="Dashboard"
-                    className="block dark:hidden w-5 h-5"
-                  />
-
-                  {/* modo escuro */}
-                  <img
-                    src="/icons/members-24-dark.png"
-                    alt="Dashboard"
-                    className="hidden dark:block w-5 h-5"
-                  />
-                </>
-              }
-            />
-
-            <MenuItem
-              href="configuracoes"
-              label="Configurações"
-              collapsed={collapsed}
-              onClick={handleMenuClick}
-              icon={
-                <>
-                  {/* modo claro */}
-                  <img
-                    src="/icons/config-24-light.png"
-                    alt="Dashboard"
-                    className="block dark:hidden w-5 h-5"
-                  />
-
-                  {/* modo escuro */}
-                  <img
-                    src="/icons/config-24-dark.png"
-                    alt="Dashboard"
-                    className="hidden dark:block w-5 h-5"
-                  />
-                </>
-              }
-            />
+            {menuItems
+              .sort((a, b) => a.order - b.order)
+              .map((item) => (
+                <MenuItem
+                  key={item.href}
+                  href={item.href}
+                  label={item.label}
+                  icon={item.icon}
+                  collapsed={collapsed}
+                  onClick={handleMenuClick}
+                />
+              ))}
           </nav>
         </div>
 
@@ -273,6 +288,9 @@ export function Sidebar() {
   );
 }
 
+/* =========================
+   MENU ITEM
+   ========================= */
 function MenuItem({
   href,
   icon,
@@ -286,29 +304,25 @@ function MenuItem({
   collapsed: boolean;
   onClick: () => void;
 }) {
- return (
-  <Link
-    href={href}
-    onClick={onClick}
-    className={`
-      group relative
-      flex items-center gap-3 rounded-md px-3 py-2 text-sm
-      hover:bg-muted transition-all duration-200
-      ${collapsed ? "justify-center" : ""}
-    `}
-  >
-    {/* Ícone */}
-    <span className="w-6 h-6 flex items-center justify-center">
-      {icon}
-    </span>
+  return (
+    <Link
+      href={href}
+      onClick={onClick}
+      className={`
+        group relative
+        flex items-center gap-3 rounded-md px-3 py-2 text-sm
+        hover:bg-muted transition-all duration-200
+        ${collapsed ? "justify-center" : ""}
+      `}
+    >
+      <span className="w-6 h-6 flex items-center justify-center">
+        {icon}
+      </span>
 
-    {/* Texto normal quando aberto */}
-    {!collapsed && <span>{label}</span>}
+      {!collapsed && <span>{label}</span>}
 
-    {/* Tooltip quando fechado */}
-    {collapsed && (
-      <span
-        className="
+      {collapsed && (
+        <span className="
           absolute left-14
           whitespace-nowrap
           rounded-md bg-black text-white
@@ -317,11 +331,10 @@ function MenuItem({
           translate-x-[-4px] group-hover:translate-x-0
           transition-all duration-200
           pointer-events-none
-        "
-      >
-        {label}
-      </span>
-    )}
-  </Link>
-);
+        ">
+          {label}
+        </span>
+      )}
+    </Link>
+  );
 }
