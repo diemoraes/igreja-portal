@@ -149,7 +149,7 @@ export function Sidebar() {
             />
 
             <MenuItem
-              href="/members"
+              href="/membros"
               label="Membros"
               collapsed={collapsed}
               onClick={handleMenuClick}

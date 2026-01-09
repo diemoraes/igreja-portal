@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Church {
+  id             String   @id @default(uuid())
+  name           String
+  logoUrl        String?
+  primaryColor   String?
+  secondaryColor String?
+  createdAt      DateTime @default(now())
+
+  users   User[]
+  members Member[]
+}
+
+
+model User {
+  id       String @id @default(uuid())
+  name     String
+  email    String @unique
+  password String
+  churchId String
+
+  church Church @relation(fields: [churchId], references: [id])
+}
+
+model Member {
+  id        String   @id @default(uuid())
+  name      String
+  birthDate DateTime
+  churchId  String
+
+  church Church @relation(fields: [churchId], references: [id])
+}
