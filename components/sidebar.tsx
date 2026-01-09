@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useTheme } from "next-themes";
+
 
 export function Sidebar() {
   const router = useRouter();
@@ -16,14 +17,24 @@ export function Sidebar() {
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
 
+type MenuItemConfig = {
+  id: string;
+  label: string;
+  href: string;
+  order: number;
+  icon: ReactNode;
+};
+
+
   /* =========================
      MENU CONFIGURÁVEL (ORDEM)
      ========================= */
-  const menuItems = [
+  const menuItems: MenuItemConfig[] = [
     {
+      id: "dashboard",
       label: "Dashboard",
       href: "dashboard",
-      order: 1,
+      order: 10,
       icon: (
         <>
           <img
@@ -40,6 +51,7 @@ export function Sidebar() {
       ),
     },
     {
+      id: "membros",
       label: "Membros",
       href: "membros",
       order: 2,
@@ -59,9 +71,50 @@ export function Sidebar() {
       ),
     },
     {
-      label: "Eventos",
-      href: "/em-breve",
+      id: "igrejas",
+      label: "Cadastro de Igrejas",
+      href: "em-breve",
+      order: 1,
+      icon: (
+        <>
+          <img
+            src="/icons/church-24-light.png"
+            alt="Membros"
+            className="block dark:hidden w-5 h-5"
+          />
+          <img
+            src="/icons/church-24-dark.png"
+            alt="Membros"
+            className="hidden dark:block w-5 h-5"
+          />
+        </>
+      ),
+    },
+    {
+      id: "oferta",
+      label: "Ofertas",
+      href: "em-breve",
       order: 3,
+      icon: (
+        <>
+          <img
+            src="/icons/oferta-24-light.png"
+            alt="Eventos"
+            className="block dark:hidden w-5 h-5"
+          />
+          <img
+            src="/icons/oferta-24-dark.png"
+            alt="Eventos"
+            className="hidden dark:block w-5 h-5"
+          />
+        </>
+      ),
+    },
+    {
+      id: "eventos",
+      label: "Eventos",
+      href: "em-breve",
+      order: 4,
       icon: (
         <>
           <img
@@ -77,9 +130,31 @@ export function Sidebar() {
         </>
       ),
     },
+    ,
     {
+      id: "bank",
+      label: "Financeiro",
+      href: "em-breve",
+      order: 4,
+      icon: (
+        <>
+          <img
+            src="/icons/banco-24-light.png"
+            alt="Eventos"
+            className="block dark:hidden w-5 h-5"
+          />
+          <img
+            src="/icons/banco-24-dark.png"
+            alt="Eventos"
+            className="hidden dark:block w-5 h-5"
+          />
+        </>
+      ),
+    },
+    {
+      id: "config",
       label: "Configurações",
-      href: "/configuracoes",
+      href: "configuracoes",
       order: 0,
       icon: (
         <>
@@ -250,7 +325,7 @@ export function Sidebar() {
               .sort((a, b) => a.order - b.order)
               .map((item) => (
                 <MenuItem
-                  key={item.href}
+                  key={item.id}
                   href={item.href}
                   label={item.label}
                   icon={item.icon}
