@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState, type ReactNode } from "react";
 import { useTheme } from "next-themes";
 
-
 export function Sidebar() {
   const router = useRouter();
   const { theme, setTheme } = useTheme();
@@ -17,14 +16,23 @@ export function Sidebar() {
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-type MenuItemConfig = {
-  id: string;
-  label: string;
-  href: string;
-  order: number;
-  icon: ReactNode;
-};
+  type MenuItemConfig = {
+    id: string;
+    label: string;
+    href?: string;
+    order: number;
+    icon: ReactNode;
+    children?: MenuItemConfig[]; // 👈 submenu
+  };
 
+  const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
+
+  function toggleSubmenu(id: string) {
+    setOpenMenus((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  }
 
   /* =========================
      MENU CONFIGURÁVEL (ORDEM)
@@ -91,26 +99,6 @@ type MenuItemConfig = {
       ),
     },
     {
-      id: "oferta",
-      label: "Ofertas",
-      href: "em-breve",
-      order: 3,
-      icon: (
-        <>
-          <img
-            src="/icons/oferta-24-light.png"
-            alt="Eventos"
-            className="block dark:hidden w-5 h-5"
-          />
-          <img
-            src="/icons/oferta-24-dark.png"
-            alt="Eventos"
-            className="hidden dark:block w-5 h-5"
-          />
-        </>
-      ),
-    },
-    {
       id: "eventos",
       label: "Eventos",
       href: "em-breve",
@@ -134,7 +122,6 @@ type MenuItemConfig = {
     {
       id: "bank",
       label: "Financeiro",
-      href: "em-breve",
       order: 4,
       icon: (
         <>
@@ -150,6 +137,28 @@ type MenuItemConfig = {
           />
         </>
       ),
+      children: [
+        {
+          id: "oferta",
+          label: "Ofertas",
+          href: "em-breve",
+          order: 3,
+          icon: (
+            <>
+              <img
+                src="/icons/oferta-24-light.png"
+                alt="Eventos"
+                className="block dark:hidden w-5 h-5"
+              />
+              <img
+                src="/icons/oferta-24-dark.png"
+                alt="Eventos"
+                className="hidden dark:block w-5 h-5"
+              />
+            </>
+          ),
+        },
+      ],
     },
     {
       id: "config",
@@ -274,9 +283,7 @@ type MenuItemConfig = {
                   alt="Portal Ekklesia"
                   className="h-7 w-7"
                 />
-                <span className="font-bold text-primary">
-                  Portal Ekklesia
-                </span>
+                <span className="font-bold text-primary">Portal Ekklesia</span>
               </div>
             )}
 
@@ -324,14 +331,50 @@ type MenuItemConfig = {
             {menuItems
               .sort((a, b) => a.order - b.order)
               .map((item) => (
-                <MenuItem
-                  key={item.id}
-                  href={item.href}
-                  label={item.label}
-                  icon={item.icon}
-                  collapsed={collapsed}
-                  onClick={handleMenuClick}
-                />
+                <div key={item.id}>
+                  {/* ITEM PRINCIPAL */}
+                  <div
+                    onClick={() =>
+                      item.children ? toggleSubmenu(item.id) : handleMenuClick()
+                    }
+                    className={`
+            flex items-center gap-3 rounded-md px-3 py-2 text-sm
+            cursor-pointer hover:bg-muted
+            ${collapsed ? "justify-center" : ""}
+          `}
+                  >
+                    <span className="w-6 h-6 flex items-center justify-center">
+                      {item.icon}
+                    </span>
+
+                    {!collapsed && <span>{item.label}</span>}
+
+                    {!collapsed && item.children && (
+                      <span className="ml-auto text-xs">
+                        {openMenus[item.id] ? "▲" : "▼"}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* SUBMENU */}
+                  {!collapsed && item.children && openMenus[item.id] && (
+                    <div className="ml-8 space-y-1">
+                      {item.children
+                        .sort((a, b) => a.order - b.order)
+                        .map((child) => (
+                          <Link
+                            key={child.id}
+                            href={child.href!}
+                            onClick={handleMenuClick}
+                            className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-muted"
+                          >
+                            <span className="w-4 h-4">{child.icon}</span>
+                            <span>{child.label}</span>
+                          </Link>
+                        ))}
+                    </div>
+                  )}
+                </div>
               ))}
           </nav>
         </div>
@@ -390,14 +433,13 @@ function MenuItem({
         ${collapsed ? "justify-center" : ""}
       `}
     >
-      <span className="w-6 h-6 flex items-center justify-center">
-        {icon}
-      </span>
+      <span className="w-6 h-6 flex items-center justify-center">{icon}</span>
 
       {!collapsed && <span>{label}</span>}
 
       {collapsed && (
-        <span className="
+        <span
+          className="
           absolute left-14
           whitespace-nowrap
           rounded-md bg-black text-white
@@ -406,7 +448,8 @@ function MenuItem({
           translate-x-[-4px] group-hover:translate-x-0
           transition-all duration-200
           pointer-events-none
-        ">
+        "
+        >
           {label}
         </span>
       )}
