@@ -109,10 +109,58 @@ export function Sidebar() {
         <div>
           <div className="h-16 flex items-center justify-between px-4 border-b">
             {!collapsed && (
-              <span className="font-bold text-primary">⛪ Portal</span>
+              <div className="flex items-center gap-2">
+                <img
+                  src="/icons/igreja-icon.png"
+                  alt="Portal Ekklesia"
+                  className="h-7 w-7"
+                />
+                <span className="font-bold text-primary">Portal Ekklesia</span>
+              </div>
             )}
-            <button onClick={toggleSidebar} className="text-sm">
-              {isMobile ? "✖" : collapsed ? "➡️" : "⬅️"}
+            <button
+              onClick={toggleSidebar}
+              className="w-8 h-8 flex items-center justify-center rounded hover:bg-muted transition"
+            >
+              {/* MOBILE */}
+              {isMobile && <span className="text-lg">✖</span>}
+
+              {/* DESKTOP */}
+              {!isMobile && (
+                <>
+                  {/* recolher (←) */}
+                  {!collapsed && (
+                    <>
+                      <img
+                        src="/icons/Back-24-light.png"
+                        alt="Recolher menu"
+                        className="block dark:hidden w-4 h-4"
+                      />
+                      <img
+                        src="/icons/Back-24-dark.png"
+                        alt="Recolher menu"
+                        className="hidden dark:block w-4 h-4"
+                      />
+                    </>
+                  )}
+
+                  {/* expandir (→) */}
+                  {collapsed && (
+                    <>
+                      <img
+                        src="/icons/forward-24-light.png"
+                        alt="Expandir menu"
+                        className="block dark:hidden w-4 h-4"
+                      />
+                      <img
+                        src="/icons/forward-24-dark.png"
+                        alt="Expandir menu"
+                        className="hidden dark:block w-4 h-4"
+                      />
+                    </>
+                  )}
+                </>
+              )}
             </button>
           </div>
 
@@ -125,7 +173,7 @@ export function Sidebar() {
 
           <nav className="px-2 space-y-1">
             <MenuItem
-              href="/dashboard"
+              href="dashboard"
               label="Dashboard"
               collapsed={collapsed}
               onClick={handleMenuClick}
@@ -149,7 +197,7 @@ export function Sidebar() {
             />
 
             <MenuItem
-              href="/members"
+              href="membros"
               label="Membros"
               collapsed={collapsed}
               onClick={handleMenuClick}
@@ -173,11 +221,27 @@ export function Sidebar() {
             />
 
             <MenuItem
-              href="/configuracoes"
-              icon="🎨"
+              href="configuracoes"
               label="Configurações"
               collapsed={collapsed}
               onClick={handleMenuClick}
+              icon={
+                <>
+                  {/* modo claro */}
+                  <img
+                    src="/icons/config-24-light.png"
+                    alt="Dashboard"
+                    className="block dark:hidden w-5 h-5"
+                  />
+
+                  {/* modo escuro */}
+                  <img
+                    src="/icons/config-24-dark.png"
+                    alt="Dashboard"
+                    className="hidden dark:block w-5 h-5"
+                  />
+                </>
+              }
             />
           </nav>
         </div>
@@ -191,7 +255,7 @@ export function Sidebar() {
             }`}
             onClick={toggleTheme}
           >
-            {collapsed ? "🌗" : theme === "dark" ?   "☀️ Claro" : "🌙 Escuro"}
+            {collapsed ? "🌗" : theme === "dark" ? "☀️ Claro" : "🌙 Escuro"}
           </Button>
 
           <Button
@@ -222,19 +286,42 @@ function MenuItem({
   collapsed: boolean;
   onClick: () => void;
 }) {
-  return (
-    <Link
-      href={href}
-      onClick={onClick}
-      className={`
-        flex items-center gap-3 rounded-md px-3 py-2 text-sm
-        hover:bg-muted transition
-        ${collapsed ? "justify-center" : ""}
-      `}
-      title={collapsed ? label : undefined}
-    >
-      <span className="w-6 h-6 flex items-center justify-center">{icon}</span>
-      {!collapsed && <span>{label}</span>}
-    </Link>
-  );
+ return (
+  <Link
+    href={href}
+    onClick={onClick}
+    className={`
+      group relative
+      flex items-center gap-3 rounded-md px-3 py-2 text-sm
+      hover:bg-muted transition-all duration-200
+      ${collapsed ? "justify-center" : ""}
+    `}
+  >
+    {/* Ícone */}
+    <span className="w-6 h-6 flex items-center justify-center">
+      {icon}
+    </span>
+
+    {/* Texto normal quando aberto */}
+    {!collapsed && <span>{label}</span>}
+
+    {/* Tooltip quando fechado */}
+    {collapsed && (
+      <span
+        className="
+          absolute left-14
+          whitespace-nowrap
+          rounded-md bg-black text-white
+          px-2 py-1 text-xs
+          opacity-0 group-hover:opacity-100
+          translate-x-[-4px] group-hover:translate-x-0
+          transition-all duration-200
+          pointer-events-none
+        "
+      >
+        {label}
+      </span>
+    )}
+  </Link>
+);
 }
