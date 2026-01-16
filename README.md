@@ -1,8 +1,8 @@
 # Igreja Portal :dizzy:
 
-Um portal web para gestão de atividades e membros de uma igreja, desenvolvido com Next.js pelo Eric e Diego.
+Um portal web para gestão de atividades e membros de uma igreja, desenvolvido com Next.js pelo Eric e Diego Moraes
 
-## Descrição
+## Descrição 
 
 Este projeto é uma aplicação web moderna para auxiliar na administração de uma igreja, incluindo funcionalidades de autenticação, dashboard, gerenciamento de membros e lembretes de aniversários.
 
