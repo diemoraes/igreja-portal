@@ -17,7 +17,7 @@ Este projeto é uma aplicação web moderna para auxiliar na administração de 
 ## Tecnologias Utilizadas
 
 - **Next.js 16**: Framework React para aplicações web.
-- **TypeScript**: Tipagem estática para JavaScript.
+- **TypeScript**: Tipagem estática para JavaScript e Type
 - **Tailwind CSS**: Framework CSS para estilização.
 - **Radix UI**: Componentes primitivos para UI acessível.
 - **Lucide React**: Ícones vetoriais.
