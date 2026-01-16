@@ -85,4 +85,4 @@ Este projeto está sob a licença MIT.
 
 ## Comentários
 
-Se você tiver sugestões, dúvidas ou comentários sobre o projeto, sinta-se à vontade para abrir uma issue no repositório ou entrar em contato.
+Se você tiver sugestões, dúvidas ou comentários sobre o projeto, sinta-se à vontade para abrir uma issue no repositório ou entrar em contato 12 981020949
