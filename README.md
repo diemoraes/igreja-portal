@@ -49,7 +49,7 @@ Este projeto é uma aplicação web moderna para auxiliar na administração de 
    pnpm dev
    ```
 
-4. Abra [http://localhost:3000](http://localhost:3000) no seu navegador.
+4. Abra [http://localhost:443](http://localhost:443) no seu navegador.
 
 ## Estrutura do Projeto
 
