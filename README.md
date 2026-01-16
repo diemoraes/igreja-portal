@@ -8,7 +8,7 @@ Este projeto é uma aplicação web moderna para auxiliar na administração de 
 
 ## Funcionalidades
 
-- **Autenticação**: Sistema de login seguro para acesso ao portal.
+- **Autenticação**: Sistema de login seguro para acesso ao portal via banco de dados.
 - **Dashboard**: Visão geral das atividades e estatísticas da igreja.
 - **Gerenciamento de Membros**: Adicionar, editar e visualizar informações dos membros.
 - **Lembretes de Aniversários**: Funcionalidade para gerenciar e notificar aniversários dos membros.
