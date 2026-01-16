@@ -1,6 +1,6 @@
 # Igreja Portal :dizzy:
 
-Um portal web para gestão de atividades e membros de uma igreja, desenvolvido com Next.js.
+Um portal web para gestão de atividades e membros de uma igreja, desenvolvido com Next.js pelo Eric e Diego.
 
 ## Descrição
 
